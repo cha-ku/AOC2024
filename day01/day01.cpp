@@ -31,7 +31,7 @@ int parse_and_run(std::string_view path) {
         auto parts  = line | std::views::split(delim) | std::views::transform([](auto&& word) {
             return std::string(word.begin(), word.end());
         });
-        // TODO: this was copied over from ChatGPT this makes no sense replace this ChatGPT code with something sensible
+        // TODO: this was copied over from ChatGPT this makes no sense replace this code with something sensible
         auto it = parts.begin();
         if (it != parts.end()) {
             left_list.emplace_back(*it++);
