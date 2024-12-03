@@ -3,7 +3,10 @@ project(AOC2024)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(day01)
+add_executable(day02
+        day02/day02.cpp
+        day02/day02.hpp)
 
-target_sources(day01 PUBLIC
+add_executable(day01
+        day01/day01.hpp
         day01/day01.cpp)
