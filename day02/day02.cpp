@@ -21,7 +21,8 @@ int test() {
         {8, 6, 4, 4, 1},
         {1, 3, 6, 7, 9}
     };
-    assert(aoc::day02::safe_report_count(test_input) == 2);
+    assert(aoc::day02::safe_count(test_input) == 2);
+    assert(aoc::day02::safe_with_tolerance_count(test_input) == 4);
     return 0;
 }
 
@@ -43,7 +44,8 @@ int parse_and_run(std::string_view path) {
         }
         input.emplace_back(nums);
     }
-    std::cout << "Part 1 solution : " << aoc::day02::safe_report_count(input) << "\n";
+    std::cout << "Part 1 solution : " << aoc::day02::safe_count(input) << "\n";
+    std::cout << "Part 2 solution : " << aoc::day02::safe_with_tolerance_count(input) << "\n";
     return 0;
 }
 
