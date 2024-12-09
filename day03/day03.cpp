@@ -12,8 +12,10 @@
 #include "day03.hpp"
 
 auto test() -> int {
-    std::vector<std::string> test_input{{"xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"}};
-    assert(aoc::day03::add_all_multiplications(test_input) == 161);
+    std::vector<std::string> test_input_1{{"xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"}};
+    assert(aoc::day03::add_all_multiplications(test_input_1) == 161);
+    std::vector<std::string> test_input_2{{"xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"}};
+    assert(aoc::day03::add_all_multiplications_if_enabled(test_input_2) == 48);
     return 0;
 }
 
@@ -30,6 +32,7 @@ auto parse_and_run(std::string_view path) -> int {
         input.emplace_back(line);
     }
     std::cout << "Part 1 solution : " << aoc::day03::add_all_multiplications(input) << "\n";
+    std::cout << "Part 2 solution : " << aoc::day03::add_all_multiplications_if_enabled(input) << "\n";
     return 0;
 }
 

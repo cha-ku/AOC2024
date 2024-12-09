@@ -1,2 +1,9 @@
+# Ignore CLion files
 .idea/
+
+# Ignore build folder
 cmake-build-*/
+build/
+
+# Ignore virtual environment
+env/
