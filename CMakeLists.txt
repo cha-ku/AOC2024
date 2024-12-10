@@ -12,7 +12,10 @@ add_executable(day02
         day02/day02.cpp
         day02/day02.hpp)
 
-
 add_executable(day03
         day03/day03.cpp
         day03/day03.hpp)
+
+add_executable(day04
+        day04/day04.cpp
+        day04/day04.hpp)
