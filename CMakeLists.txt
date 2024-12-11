@@ -19,3 +19,7 @@ add_executable(day03
 add_executable(day04
         day04/day04.cpp
         day04/day04.hpp)
+
+add_executable(day05
+        day05/day05.cpp
+        day05/day05.hpp)
