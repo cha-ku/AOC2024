@@ -62,7 +62,7 @@ auto parse_and_run(std::string_view path) -> int {
 
     }
     std::cout << "Part 1 solution : " << aoc::day05::sum_of_correctly_ordered_middle_pages(input) << "\n";
-    //std::cout << "Part 2 solution : " << aoc::day04::get_x_mas_count(input) << "\n";
+    std::cout << "Part 2 solution : " << aoc::day05::sum_of_fixed_incorrectly_ordered_middle_pages(input) << "\n";
     return 0;
 }
 

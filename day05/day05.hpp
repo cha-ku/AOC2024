@@ -87,6 +87,19 @@ namespace aoc::day05 {
         return true;
     }
 
+    auto get_incorrect_order_index(std::vector<int>& update, std::unordered_map<int, std::unordered_set<int>>& relations)  {
+        for(auto i = 0; i < update.size(); ++i) {
+            const auto& element = update[i];
+            const auto& should_come_after = relations[element];
+            for (auto j = i+1; j < update.size(); ++j) {
+                if (!should_come_after.contains(update[j])) {
+                    return std::make_pair(i, j);
+                }
+            }
+        }
+        return std::make_pair(-1, -1);
+    }
+
     auto sum_of_correctly_ordered_middle_pages(std::string& input_text) {
         ui64 result{0};
         auto [updates, relations] = process_text(input_text);
@@ -102,27 +115,18 @@ namespace aoc::day05 {
         ui64 result{0};
         auto [updates, relations] = process_text(input_text);
         for(auto& update : updates) {
-            if (!is_correctly_ordered(update, relations)) {
-                auto to_be_fixed = update;
-                for(auto i = 0; i < to_be_fixed.size(); ++i) {
-                    const auto& element = to_be_fixed[i];
-                    const auto& should_come_after = relations[element];
-                    for (auto j = i+1; j < to_be_fixed.size(); ++j) {
-                        if (!should_come_after.contains(to_be_fixed[j])) {
-                            for(auto fix : should_come_after) {
-                                if (std::find(std::begin(to_be_fixed), std::end(to_be_fixed), fix) == std::end(to_be_fixed)) {
-                                    to_be_fixed[j] = fix;
-                                }
-                            }
-                        }
-                    }
-                }
-                std::cout << "converted ";
-                print(update);
-                std::cout << "to ";
-                print(to_be_fixed);
-                result += to_be_fixed[static_cast<size_t>(to_be_fixed.size()/2)];
+            auto [idx1, idx2] = get_incorrect_order_index(update, relations);
+            if (idx1 == idx2) {
+                continue;
             }
+            auto to_be_fixed = update;
+            while (idx1 != idx2) {
+                std::swap(to_be_fixed[idx1], to_be_fixed[idx2]);
+                const auto& [idx1_1, idx2_2] = get_incorrect_order_index(to_be_fixed, relations);
+                idx1 = idx1_1;
+                idx2 = idx2_2;
+            }
+            result += to_be_fixed[static_cast<size_t>(to_be_fixed.size()/2)];
         }
         return result;
     }
