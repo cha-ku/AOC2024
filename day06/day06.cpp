@@ -13,7 +13,7 @@
 #include "day06.hpp"
 
 auto test() -> int {
-    std::vector<std::string> test_input{
+    const std::vector<std::string> test_input{
         "....#.....",
         ".........#",
         "..........",
@@ -25,7 +25,8 @@ auto test() -> int {
         "#.........",
         "......#..."
     };
-    assert(aoc::day06::get_unique_positions(test_input) == 41);
+    assert(aoc::day06::get_unique_positions_count(test_input) == 41);
+    assert(aoc::day06::get_num_possible_obstruction_locations(test_input) == 6);
     return 0;
 }
 
@@ -41,8 +42,8 @@ auto parse_and_run(std::string_view path) -> int {
     while(std::getline(file, line)) {
         input.emplace_back(line);
     }
-    std::cout << "Part 1 solution : " << aoc::day06::get_unique_positions(input) << "\n";
-//    std::cout << "Part 2 solution : " << aoc::day05::sum_of_fixed_incorrectly_ordered_middle_pages(input) << "\n";
+    std::cout << "Part 1 solution : " << aoc::day06::get_unique_positions_count(input) << "\n";
+    std::cout << "Part 2 solution : " << aoc::day06::get_num_possible_obstruction_locations(input) << "\n";
     return 0;
 }
 
