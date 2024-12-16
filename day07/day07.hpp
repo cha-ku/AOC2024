@@ -49,27 +49,46 @@ namespace aoc::day07 {
         return std::make_pair(test_value, number_vec);
     }
 
-    auto check(const ull& test, const std::vector<ull>& test_values, const size_t current_index, ull curr_result) -> bool
+    auto check(const ull& test, const std::vector<ull>& test_values, const size_t current_index, ull curr_result, bool concat) -> bool
     {
+        auto concat_two_numbers = [](ull num1, ull num2) {
+            return std::stoull(std::to_string(num1) + std::to_string(num2));
+        };
+
         if (current_index == test_values.size() - 1)
         {
-            return (curr_result * test_values[current_index]) == test || (curr_result + test_values[current_index]) == test;
+            auto part_1 = (curr_result * test_values[current_index]) == test || (curr_result + test_values[current_index]) == test;
+            if (concat)
+            {
+                return  part_1 || (concat_two_numbers(curr_result, test_values[current_index]) == test);
+            }
+            return part_1;
         }
-        return check(test, test_values, current_index+1, curr_result * test_values[current_index]) || (check(test, test_values, current_index+1, curr_result + test_values[current_index]));
+        if (concat)
+        {
+            return check(test, test_values, current_index+1, curr_result * test_values[current_index], concat)
+                    ||
+                    check(test, test_values, current_index+1, curr_result + test_values[current_index], concat)
+                    ||
+                    check(test, test_values, current_index+1, concat_two_numbers(curr_result, test_values[current_index]), concat);
+
+        }
+        return check(test, test_values, current_index+1, curr_result * test_values[current_index], concat)
+               || check(test, test_values, current_index+1, curr_result + test_values[current_index], concat);
     }
 
-    auto calibration_result_is_true(const ull &test, const std::vector<ull> &test_values)
+    auto calibration_result_is_true(const ull &test, const std::vector<ull> &test_values, bool concat)
     {
         ull curr_result = test_values[0];
-        return check(test, test_values, 1, curr_result);
+        return check(test, test_values, 1, curr_result, concat);
     }
 
-    auto calibration_result_if_true(const std::vector<std::string>& test_input) -> ull
+    auto calibration_result_if_true(const std::vector<std::string>& test_input, bool concat=false) -> ull
     {
         ull result{0};
         std::for_each(test_input.cbegin(), test_input.cend(), [&](const auto& line) {
             const auto& [test_value, puzzle_input_values] = parse_input_line(line);
-            if (calibration_result_is_true(test_value, puzzle_input_values))
+            if (calibration_result_is_true(test_value, puzzle_input_values, concat))
             {
                 result += test_value;
             }

@@ -25,6 +25,7 @@ auto test() -> int {
             "292: 11 6 16 20"
     };
     assert(aoc::day07::calibration_result_if_true(test_input) == 3749);
+    assert(aoc::day07::calibration_result_if_true(test_input, true) == 11387);
     return 0;
 }
 
@@ -41,7 +42,7 @@ auto parse_and_run(std::string_view path) -> int {
         input.emplace_back(line);
     }
     std::cout << "Part 1 solution : " << aoc::day07::calibration_result_if_true(input) << "\n";
-//    std::cout << "Part 2 solution : " << aoc::day07::get_num_possible_obstruction_locations(input) << "\n";
+    std::cout << "Part 2 solution : " << aoc::day07::calibration_result_if_true(input, true) << "\n";
     return 0;
 }
 
