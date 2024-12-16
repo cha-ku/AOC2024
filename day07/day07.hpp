@@ -29,11 +29,13 @@ namespace aoc::day07 {
         std::cout << "\n";
     };
 
-    auto parse_input_line(const std::string& line, std::unordered_map<uint64_t, std::vector<uint64_t>>& parsed)
+    using ull = unsigned long long;
+
+    auto parse_input_line(const std::string& line) -> std::pair<ull, std::vector<ull>>
     {
         constexpr auto test_value_delim = R"(:)";
         const auto test_value_found = line.find(test_value_delim);
-        const uint64_t test_value = std::stoul(line.substr(0, test_value_found));
+        const ull test_value = std::stoull(line.substr(0, test_value_found));
         const auto& str_operators = line.substr(test_value_found+1);
         auto number_vec = str_operators
                           | std::ranges::views::split(' ')
@@ -41,70 +43,37 @@ namespace aoc::day07 {
                                 std::string_view sv(num_str.begin(), num_str.end());
                                 std::string str{sv};
                                 // NOLINTNEXTLINE
-                                return str.size() == 0 ? 0 : std::stoul(str); })
+                                return str.size() == 0 ? 0 : std::stoull(str); })
                           | std::ranges::to<std::vector>();
         number_vec.erase(std::remove_if(number_vec.begin(), number_vec.end(), [](const auto& elem) { return elem == 0; }));
-        parsed[test_value] = number_vec;
+        return std::make_pair(test_value, number_vec);
     }
 
-    auto generate_all_combinations(uint64_t container_size) {
-        uint64_t max_operations = std::pow(2, container_size);
-        std::vector<std::vector<uint8_t>> operations;
-        uint64_t start{0};
-        while(start < max_operations) {
-            std::vector<uint8_t> bool_repr(container_size-1, false);
-            uint64_t x{0};
-            while(x <= start)
-            {
-                if (1 << x & start)
-                {
-                    bool_repr[x] = true;
-                }
-                else
-                {
-                    bool_repr[x] = false;
-                }
-                ++x;
-            }
-            operations.emplace_back(bool_repr);
-            ++start;
-        }
-        return operations;
-    }
-
-    auto calibration_result_is_true(const uint64_t& test, const std::vector<uint64_t>& test_values)
+    auto check(const ull& test, const std::vector<ull>& test_values, const size_t current_index, ull curr_result) -> bool
     {
-        const auto all_combinations = generate_all_combinations(test_values.size());
-        for(const auto& combination : all_combinations)
+        if (current_index == test_values.size() - 1)
         {
-            uint64_t combination_result{test_values[0]};
-            for(size_t i = 0; i < combination.size(); ++i)
-            {
-                combination[i] ? combination_result *= test_values[i+1] : combination_result += test_values[i+1];
-                if (combination_result == test)
-                {
-                    return true;
-                }
-            }
+            return (curr_result * test_values[current_index]) == test || (curr_result + test_values[current_index]) == test;
         }
-        return false;
+        return check(test, test_values, current_index+1, curr_result * test_values[current_index]) || (check(test, test_values, current_index+1, curr_result + test_values[current_index]));
     }
 
-    auto calibration_result_if_true(const std::vector<std::string>& test_input) -> uint64_t
+    auto calibration_result_is_true(const ull &test, const std::vector<ull> &test_values)
     {
-        std::unordered_map<uint64_t, std::vector<uint64_t>> parsed;
+        ull curr_result = test_values[0];
+        return check(test, test_values, 1, curr_result);
+    }
+
+    auto calibration_result_if_true(const std::vector<std::string>& test_input) -> ull
+    {
+        ull result{0};
         std::for_each(test_input.cbegin(), test_input.cend(), [&](const auto& line) {
-            parse_input_line(line, parsed);
-        });
-        long long unsigned result{0};
-        for(const auto& [test_value, puzzle_input_values]: parsed)
-        {
+            const auto& [test_value, puzzle_input_values] = parse_input_line(line);
             if (calibration_result_is_true(test_value, puzzle_input_values))
             {
                 result += test_value;
             }
-
-        }
+        });
         return result;
     }
 }

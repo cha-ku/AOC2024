@@ -24,8 +24,7 @@ auto test() -> int {
             "21037: 9 7 18 13",
             "292: 11 6 16 20"
     };
-    assert(aoc::day07::calibration_result_if_true(test_input) == 3749)  ;
-    //assert(aoc::day07::get_num_possible_obstruction_locations(test_input) == 6);
+    assert(aoc::day07::calibration_result_if_true(test_input) == 3749);
     return 0;
 }
 
