@@ -64,17 +64,16 @@ namespace aoc::day07 {
             }
             return part_1;
         }
+
+        auto part_1 =  check(test, test_values, current_index+1, curr_result * test_values[current_index], concat)
+               || check(test, test_values, current_index+1, curr_result + test_values[current_index], concat);
         if (concat)
         {
-            return check(test, test_values, current_index+1, curr_result * test_values[current_index], concat)
-                    ||
-                    check(test, test_values, current_index+1, curr_result + test_values[current_index], concat)
-                    ||
+            return part_1 ||
                     check(test, test_values, current_index+1, concat_two_numbers(curr_result, test_values[current_index]), concat);
 
         }
-        return check(test, test_values, current_index+1, curr_result * test_values[current_index], concat)
-               || check(test, test_values, current_index+1, curr_result + test_values[current_index], concat);
+        return part_1;
     }
 
     auto calibration_result_is_true(const ull &test, const std::vector<ull> &test_values, bool concat)
