@@ -28,6 +28,7 @@ auto test() -> int {
             "............"
     };
     assert(aoc::day08::get_num_unique_locations(test_input) == 14);
+    assert(aoc::day08::get_num_unique_locations(test_input, false) == 34);
     return 0;
 }
 
@@ -44,7 +45,7 @@ auto parse_and_run(std::string_view path) -> int {
         input.emplace_back(line);
     }
     std::cout << "Part 1 solution : " << aoc::day08::get_num_unique_locations(input) << "\n";
-    //std::cout << "Part 2 solution : " << aoc::day07::calibration_result_if_true(input, true) << "\n";
+    std::cout << "Part 2 solution : " << aoc::day08::get_num_unique_locations(input, false) << "\n";
     return 0;
 }
 

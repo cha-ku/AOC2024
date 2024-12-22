@@ -76,7 +76,7 @@ namespace aoc::day08 {
         return distance;
     }
 
-    auto get_num_unique_locations(const auto& input) {
+    auto get_num_unique_locations(const auto& input, const bool only_two_antinodes=true) {
         LocationPairSet result;
         const auto& antenna_locations = get_antenna_locations(input);
         const auto num_rows = input.size();
@@ -88,34 +88,31 @@ namespace aoc::day08 {
                         for (int j = i+1; j < value.size(); ++j) {
                             const auto& antenna1 = value[i];
                             const auto& antenna2 = value[j];
-                            //if (antenna1.r == antenna2.r and antenna1.c == antenna2.c) {
-                            //    continue;
-                            //}
+
                             const auto distance_point_antenna1 = get_distance(c, r, antenna1.c, antenna1.r);
                             const auto distance_point_antenna2 = get_distance(c, r, antenna2.c, antenna2.r);
-                            //const auto slope_point_antenna1 = get_slope(c, r, antenna1.c, antenna1.r);
-
-                            //const auto slope_point_antenna2 = get_slope(c, r, antenna2.c, antenna2.r);
 
                             constexpr auto twice_distance = [](const double p_to_ant1, const double p_to_ant2) -> bool {
                                 return (p_to_ant1 == 2 * p_to_ant2) or (p_to_ant2 == 2 * p_to_ant1);
                             };
 
                             const auto in_one_line = [&r, &c](const LocationPair& ant1, const LocationPair& ant2) -> bool {
-                                // point to antenna1 = (r - ant1.r)/(c - ant1.c)
-                                // point to antenna2 = (r - ant2.r)/(c - ant2.c)
                                 return ((r - ant1.r) * (c - ant2.c)) == ((c - ant1.c) * (r - ant2.r));
                             };
 
-
-                            if (in_one_line(antenna1, antenna2) and
-                            twice_distance(distance_point_antenna1,
-                                           distance_point_antenna2))
+                            if (only_two_antinodes)
                             {
-                                //std::cout << "antenna1 : (" << antenna1.r << "," << antenna1.c << ")";
-                                //std::cout << " antenna2 : (" << antenna2.r << "," << antenna2.c << ")";
-                                //std::cout << " point : (" << r << "," << c << ")";
-                                //std::cout << "\n";
+                                if (in_one_line(antenna1, antenna2) and
+                                    twice_distance(distance_point_antenna1,
+                                                   distance_point_antenna2))
+                                {
+                                    result.emplace(LocationPair(r,c));
+                                }
+                                continue;
+                            }
+
+                            if (in_one_line(antenna1, antenna2))
+                            {
                                 result.emplace(LocationPair(r,c));
                             }
                         }
