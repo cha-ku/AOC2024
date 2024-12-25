@@ -28,8 +28,9 @@ namespace aoc::day09 {
     };
 
     using u64 = uint64_t;
+    using fileId_info = std::tuple<int, int, int>;
 
-    std::stack<std::pair<int, int>> fileId_count;
+    std::stack<fileId_info> fileId_count;
     bool file_id_count_generated = false;
     auto generate_representation(const std::string& input) -> std::vector<int> {
         std::vector<int> result;
@@ -39,11 +40,12 @@ namespace aoc::day09 {
             auto num = input[pos] - '0';
             bool is_block = pos % 2 == 0;
             if (is_block && !file_id_count_generated) {
-                fileId_count.emplace(fileId, num);
+                fileId_count.emplace(fileId, num, fileId_index);
             }
             while(num > 0) {
                 result.emplace_back(is_block ? fileId : -1);
                 --num;
+                ++fileId_index;
             }
             if (is_block) {
                 ++fileId;
@@ -55,19 +57,20 @@ namespace aoc::day09 {
 
     auto move_file_blocks_2(std::vector<int>&& generated) -> std::vector<int> {
         while(!fileId_count.empty()) {
-            const auto& [file_id, count] = fileId_count.top();
+            const auto& [fileId, count, index] = fileId_count.top();
             fileId_count.pop();
-            auto generated_until_index =  std::ranges::take_while_view(generated, [&file_id](int num){ return num != file_id;});
-            auto chunks = generated_until_index | std::views::enumerate | std::views::chunk_by([](auto a, auto b) {
+            auto generated_until_index =  std::ranges::take_while_view(generated, [&fileId](int num){ return num != fileId;});
+            auto block_view = generated_until_index | std::views::enumerate | std::views::chunk_by([](auto a, auto b) {
                 return std::get<1>(a) == std::get<1>(b);
             });
-            for (auto c : chunks) {
-                if (std::get<1>(*c.begin()) == -1) {
-                    if (count <= c.size()) {
-                        auto f = std::find(generated.begin(), generated.end(), file_id);
-                        std::ranges::fill_n(f, count, -1);
-                        auto start = std::get<0>(*c.begin());
-                        std::ranges::fill_n(generated.begin() + start, count, file_id);
+            for (auto block : block_view) {
+                if (std::get<1>(*block.begin()) == -1) {
+                    if (count <= block.size()) {
+                        // fill fileId positions with -1
+                        std::ranges::fill_n(generated.begin()+index, count, -1);
+                        auto start = std::get<0>(*block.begin());
+                        // fill -1s with fileId
+                        std::ranges::fill_n(generated.begin() + start, count, fileId);
                         break;
                     }
                 }
