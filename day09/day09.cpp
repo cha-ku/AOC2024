@@ -14,6 +14,7 @@
 auto test() -> int {
     const std::string test_input{ "2333133121414131402"};
     assert(aoc::day09::get_checksum(test_input) == 1928);
+    assert(aoc::day09::get_checksum(test_input, true) == 2858);
     return 0;
 }
 
@@ -27,7 +28,7 @@ auto parse_and_run(std::string_view path) -> int {
     std::string line;
     std::getline(file, line);
     std::cout << "Part 1 solution : " << aoc::day09::get_checksum(line) << "\n";
-    //std::cout << "Part 2 solution : " << aoc::day08::get_num_unique_locations(input, false) << "\n";
+    std::cout << "Part 2 solution : " << aoc::day09::get_checksum(line, true) << "\n";
     return 0;
 }
 

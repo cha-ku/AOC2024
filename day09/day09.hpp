@@ -9,6 +9,8 @@
 #include <cstdint>
 #include <algorithm>
 #include <ranges>
+#include <stack>
+#include <print>
 
 namespace aoc::day09 {
     [[maybe_unused]] auto print (const auto& container) {
@@ -27,24 +29,54 @@ namespace aoc::day09 {
 
     using u64 = uint64_t;
 
+    std::stack<std::pair<int, int>> fileId_count;
+    bool file_id_count_generated = false;
     auto generate_representation(const std::string& input) -> std::vector<int> {
         std::vector<int> result;
-        u64 index{0};
+        u64 fileId{0};
+        u64 fileId_index{0};
         for (size_t pos = 0; pos < input.size(); ++pos) {
             auto num = input[pos] - '0';
             bool is_block = pos % 2 == 0;
+            if (is_block && !file_id_count_generated) {
+                fileId_count.emplace(fileId, num);
+            }
             while(num > 0) {
-                result.emplace_back(is_block ? index : -1);
+                result.emplace_back(is_block ? fileId : -1);
                 --num;
             }
             if (is_block) {
-                ++index;
+                ++fileId;
             }
         }
+        file_id_count_generated = true;
         return result;
     }
 
-    auto move_file_blocks(std::vector<int>&& generated) -> std::vector<int> {
+    auto move_file_blocks_2(std::vector<int>&& generated) -> std::vector<int> {
+        while(!fileId_count.empty()) {
+            const auto& [file_id, count] = fileId_count.top();
+            fileId_count.pop();
+            auto generated_until_index =  std::ranges::take_while_view(generated, [&file_id](int num){ return num != file_id;});
+            auto chunks = generated_until_index | std::views::enumerate | std::views::chunk_by([](auto a, auto b) {
+                return std::get<1>(a) == std::get<1>(b);
+            });
+            for (auto c : chunks) {
+                if (std::get<1>(*c.begin()) == -1) {
+                    if (count <= c.size()) {
+                        auto f = std::find(generated.begin(), generated.end(), file_id);
+                        std::ranges::fill_n(f, count, -1);
+                        auto start = std::get<0>(*c.begin());
+                        std::ranges::fill_n(generated.begin() + start, count, file_id);
+                        break;
+                    }
+                }
+            }
+        }
+        return generated;
+    }
+
+    auto move_file_blocks_1(std::vector<int>&& generated) -> std::vector<int> {
         std::vector<size_t> blanks;
         for (const auto& [idx , x] : std::views::enumerate(generated)) {
             if(x == -1) {
@@ -66,8 +98,9 @@ namespace aoc::day09 {
         return generated;
     }
 
-    auto get_checksum(const std::string& input) -> u64 {
-        const auto& processed = move_file_blocks(generate_representation(input));
+    auto get_checksum(const std::string& input, const bool part2=false) -> u64 {
+        const auto& processed = part2 ? move_file_blocks_2(generate_representation(input)) : move_file_blocks_1(
+                generate_representation(input));
         u64 result{0};
         for (size_t i = 0; i < processed.size(); ++i) {
             if (processed[i] != -1) {
