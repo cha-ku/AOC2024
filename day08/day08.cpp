@@ -8,7 +8,6 @@
 #include <iostream>
 #include <iomanip>
 #include <cassert>
-#include <ranges>
 
 #include "day08.hpp"
 
