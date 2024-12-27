@@ -22,11 +22,6 @@ namespace aoc::day05 {
 
     using ui64 = uint64_t;
 
-    struct before_and_after {
-        int element;
-        std::vector<int> after_element;
-        std::vector<int> before_element;
-    };
     auto process_text(std::string& txt)  {
         std::stringstream ss(txt);
         std::string line;
