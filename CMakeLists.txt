@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.26)
 project(AOC2024)
+find_package(ctre CONFIG REQUIRED)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
@@ -57,3 +58,8 @@ add_executable(day12
 add_executable(day13
         day13/day13.cpp
         day13/day13.hpp)
+
+add_executable(day14
+        day14/day14.cpp
+        day14/day14.hpp)
+target_link_libraries(day14 PRIVATE ctre::ctre)

@@ -1,0 +1,15 @@
+{
+  "name" : "aoc2024",
+  "version-string" : "1.0.0",
+  "builtin-baseline" : "4b3b6201414638abfcd8ef4629dfbd958985667e",
+  "dependencies" : [ {
+    "name" : "ctre",
+    "version>=" : "3.9.0"
+  }, {
+    "name" : "vcpkg-cmake-config",
+    "version>=" : "2024-05-23"
+  }, {
+    "name" : "vcpkg-cmake",
+    "version>=" : "2024-04-23"
+  } ]
+}
