@@ -4,6 +4,8 @@ project(AOC2024)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
 
+add_compile_options(-Wall -Werror -Wpedantic -Wno-sign-compare)
+
 add_executable(day01
         day01/day01.hpp
         day01/day01.cpp)
@@ -51,3 +53,7 @@ add_executable(day11
 add_executable(day12
         day12/day12.cpp
         day12/day12.hpp)
+
+add_executable(day13
+        day13/day13.cpp
+        day13/day13.hpp)

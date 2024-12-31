@@ -16,7 +16,7 @@ namespace aoc::day11 {
     using std::operator""sv;
     auto num_stones_after_blinks(const std::string& input, const uint64_t num_blinks) -> uint64_t {
         std::string input_copy = input;
-        for (const auto index : std::views::iota(0) | std::views::take(num_blinks)) {
+        for ([[maybe_unused]] const auto index : std::views::iota(0) | std::views::take(num_blinks)) {
             std::string result;
             for (const auto num : input_copy | std::views::split(" "sv)) {
                 std::string num_str{num.begin(), num.end()};
@@ -60,7 +60,7 @@ namespace aoc::day11 {
         for (const auto num : input | std::views::split(" "sv)) {
             stone_counts[std::stoull(std::string(num.begin(), num.end()))] = 1;
         }
-        for (const auto index : std::views::iota(0) | std::views::take(num_blinks)) {
+        for ([[maybe_unused]] auto index : std::views::iota(0) | std::views::take(num_blinks)) {
             std::unordered_map<ui64, ui64> tmp;
             for (const auto& [key, count] : stone_counts) {
                 if (key == 0) {
