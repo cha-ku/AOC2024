@@ -63,3 +63,8 @@ add_executable(day14
         day14/day14.cpp
         day14/day14.hpp)
 target_link_libraries(day14 PRIVATE ctre::ctre)
+
+add_executable(day15
+        day15/day15.hpp
+        day15/day15.cpp
+        day15/day15.hpp)
