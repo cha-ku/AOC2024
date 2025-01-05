@@ -23,7 +23,7 @@ auto test() -> int {
         "########"
     };
     const std::string directions{"<^^>>>vv<v>>v<<"};
-    //assert(aoc::day15::sum_of_gps_coordinates(test_input1, directions) == 2028);
+    assert(aoc::day15::sum_of_gps_coordinates_part1(test_input1, directions) == 2028);
 
     std::vector<std::string> test_input2{
         "#######",
@@ -35,7 +35,7 @@ auto test() -> int {
         "#######"
     };
     const std::string directions2{"<vv<<^^<<^^"};
-    std::cout << aoc::day15::sum_of_gps_coordinates(test_input2, directions2, true) << "\n";
+    assert(aoc::day15::sum_of_gps_coordinates_part2(test_input2, directions2) == 618);
 
     std::vector<std::string> test_input3{
         "##########",
@@ -50,7 +50,8 @@ auto test() -> int {
         "##########"
     };
     const std::string directions3{"<vv>^<v^>v>^vv^v>v<>v^v<v<^vv<<<^><<><>>v<vvv<>^v^>^<<<><<v<<<v^vv^v>^vvv<<^>^v^^><<>>><>^<<><^vv^^<>vvv<>><^^v>^>vv<>v<<<<v<^v>^<^^>>>^<v<v><>vv>v^v^<>><>>>><^^>vv>v<^^^>>v^v^<^^>v^^>v^<^v>v<>>v^v^<v>v^^<^^vv<<<v<^>>^^^^>>>v^<>vvv^><v<<<>^^^vv^<vvv>^>v<^^^^v<>^>vvvv><>>v^<<^^^^^^><^><>>><>^^<<^^v>>><^<v>^<vv>>v>>>^v><>^v><<<<v>>v<v<v>vvv>^<><<>^><^>><>^v<><^vvv<^^<><v<<<<<><^v<<<><<<^^<v<^^^><^>>^<v^><<<^>>^v<v^v<v^>^>>^v>vv>^<<^v<>><<><<v<<v><>v<^vv<<<>^^v^>^^>>><<^v>>v^v><^^>>^<>vv^<><^^>^^^<><vvvvv^v<v<<>^v<v>v<<^><<><<><<<^^<<<^<<>><<><^^^>^^<>^>v<>^^>vv<^v^v<vv>^<><v<^v>^^^>>>^^vvv^>vvv<>>>^<^>>>>>^<<^v>^vvv<>^<><<v>v^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^"};
-    //assert(aoc::day15::sum_of_gps_coordinates(test_input3, directions3) == 10092);
+    assert(aoc::day15::sum_of_gps_coordinates_part1(test_input3, directions3) == 10092);
+    assert(aoc::day15::sum_of_gps_coordinates_part2(test_input3, directions3) == 9021);
 
     return 0;
 }
@@ -77,8 +78,8 @@ auto parse_and_run(std::string_view path) -> int {
             move_sequence += line;
         }
     }
-    std::cout << "Part 1 solution : " << aoc::day15::sum_of_gps_coordinates(grid, move_sequence) << "\n";
-    //std::cout << "Part 2 solution : " << aoc::day14::check_easter_egg(input, 103, 101) << "\n";
+    std::cout << "Part 1 solution : " << aoc::day15::sum_of_gps_coordinates_part1(grid, move_sequence) << "\n";
+    std::cout << "Part 2 solution : " << aoc::day15::sum_of_gps_coordinates_part2(grid, move_sequence) << "\n";
     return 0;
 }
 

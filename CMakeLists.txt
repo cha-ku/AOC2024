@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.26)
 project(AOC2024)
-find_package(ctre CONFIG REQUIRED)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
+find_package(ctre CONFIG REQUIRED)
 
 add_compile_options(-Wall -Werror -Wpedantic -Wno-sign-compare)
 
